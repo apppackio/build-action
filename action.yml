@@ -1,0 +1,17 @@
+name: AppPack Build
+description: Build AppPack image locally
+branding:
+  icon: box
+  color: purple
+inputs:
+  appname:
+    description: Name of the AppPack app
+    required: true
+outputs:
+  docker_image:
+    description: Name of docker image created during build
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.appname }}
