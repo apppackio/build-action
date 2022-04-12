@@ -15,14 +15,14 @@ export DOCKERHUB_USERNAME=$(aws ssm get-parameters --names /apppack/account/dock
 export DOCKERHUB_ACCESS_TOKEN=$(aws ssm get-parameters --names /apppack/account/dockerhub-access-token --with-decryption --query Parameters[0].Value --output text)
 # extract build script
 jq -r .source.buildspec < build.json > buildspec.yml
-yj < buildspec.yml | jq -r .phases.install.commands > script.sh
-yj < buildspec.yml | jq -r .phases.pre_build.commands >> script.sh
-yj < buildspec.yml | jq -r .phases.build.commands >> script.sh
+yj < buildspec.yml | jq -r .phases.install.commands > /tmp/script.sh
+yj < buildspec.yml | jq -r .phases.pre_build.commands >> /tmp/script.sh
+yj < buildspec.yml | jq -r .phases.build.commands >> /tmp/script.sh
 rm build.json buildspec.yml
 mkdir -p "$HOME" && git config --global --add safe.directory "$(pwd)"
 # run build script
 echo "::group::Running build process"
-bash script.sh
+bash /tmp/script.sh
 echo "::endgroup::"
 echo "Fixing file permissions"
 find . -user 0 -maxdepth 1 -type f -exec chown 1001 {} +
