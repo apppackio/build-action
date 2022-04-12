@@ -19,6 +19,7 @@ yj < buildspec.yml | jq -r .phases.install.commands > script.sh
 yj < buildspec.yml | jq -r .phases.pre_build.commands >> script.sh
 yj < buildspec.yml | jq -r .phases.build.commands >> script.sh
 rm build.json buildspec.yml
+mkdir -p "$HOME" && git config --global --add safe.directory "$(pwd)"
 # run build script
 echo "::group::Running build process"
 bash script.sh
