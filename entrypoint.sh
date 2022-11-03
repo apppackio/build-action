@@ -26,4 +26,4 @@ bash /tmp/script.sh
 echo "::endgroup::"
 echo "Fixing file permissions"
 find . -user 0 -maxdepth 1 -type f -exec chown 1001 {} +
-echo "::set-output name=docker_image::$DOCKER_REPO:$GITHUB_SHA"
+echo "docker_image=$DOCKER_REPO:$GITHUB_SHA" >> "$GITHUB_OUTPUT"
